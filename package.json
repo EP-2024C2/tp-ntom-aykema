@@ -4,17 +4,25 @@
   "description": "Trabajo Practico M to N - -Grupo xxxxxxxxx",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "sequelize",
     "association",
     "MTON"
   ],
-  "author": "Grupo xxxxxxxxx",
+  "author": "Grupo aykema",
   "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.0",
+    "joi": "^17.13.3",
+    "sequelize": "^6.37.4",
+    "sqlite3": "^5.1.7"
+  },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.7",
+    "sequelize-cli": "^6.6.2"
   }
 }
