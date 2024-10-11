@@ -1,9 +1,11 @@
 const express = require('express')
 const app = express()
 const db = require('./models')
+const fabricantesRoutes = require('./routes/fabricantes.route')
 const PORT = 3001
 
 app.use(express.json())
+app.use(fabricantesRoutes)
 
 app.listen(PORT, ()=>{
     console.log(`Aplicacion iniiciada en el puerto ${PORT}`)
