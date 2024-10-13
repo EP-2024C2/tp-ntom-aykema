@@ -1,4 +1,4 @@
-const { Producto } = require('../models')
+const { Producto, Componente, Fabricante } = require('../models')
 
 const getAllProductos = async (req, res) => {
     const productos = await Producto.findAll({})
@@ -46,4 +46,44 @@ const updateProductoById = async (req, res) => {
     res.status(200).json(producto)
 }
 
-module.exports = {getAllProductos, getProductoById, deleteProductoById, createProducto, updateProductoById}
+const getProductoYSusComponentes = async (req, res) => {
+    const idProducto = req.params.id
+    const producto = await Producto.findOne({
+        where : { id : idProducto },
+        include : {
+            model: Componente
+        }
+    })
+    res.status(200).json(producto)
+}
+
+const getProductoYSusFabricantes = async (req, res) => {
+    const idProducto = req.params.id
+    const producto = await Producto.findOne({
+        where : { id : idProducto },
+        include : {
+            model: Fabricante
+        }
+    })
+    res.status(200).json(producto)
+}
+
+const addComponenteToProducto = async (req, res) => {
+    const idProducto = req.params.id
+    const producto = await Producto.findByPk(idProducto)
+    const {nombre, descripcion} = req.body
+    const componente = await Componente.create({nombre, descripcion})
+    await producto.addComponente(componente)
+    res.status(201).json({ mensaje : 'Componente agregado al producto'})
+}
+
+const addFabricanteToProducto = async (req, res) => {
+    const idProducto = req.params.id
+    const producto = await Producto.findByPk(idProducto)
+    const {nombre,direccion, numeroContacto, pathImgPerfil} = req.body
+    const fabricante = await Fabricante.create({nombre,direccion, numeroContacto, pathImgPerfil})
+    await producto.addFabricante(fabricante)
+    res.status(201).json({ mensaje : 'Fabricante agregado al producto'})
+}
+
+module.exports = {getAllProductos, getProductoById, deleteProductoById, createProducto, updateProductoById, getProductoYSusComponentes, getProductoYSusFabricantes, addComponenteToProducto, addFabricanteToProducto}
