@@ -13,4 +13,6 @@ route.delete('/fabricantes/:id', fabricantesController.deleteFabricanteById)
 
 route.put('/fabricantes/:id', fabricantesController.updateFabricanteById)
 
+route.get('/fabricantes/:id/productos', fabricantesController.getFabricanteYSusProductos)
+
 module.exports = route

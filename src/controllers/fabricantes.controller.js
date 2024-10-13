@@ -1,4 +1,4 @@
-const { Fabricante } = require('../models')
+const { Fabricante, Producto } = require('../models')
 
 const getAllFabricantes = async (req, res) => {
     const fabricantes = await Fabricante.findAll({})
@@ -46,6 +46,17 @@ const updateFabricanteById = async (req, res) => {
     res.status(200).json(fabricante)
 }
 
-module.exports = {getAllFabricantes, getFabricanteById, deleteFabricanteById, createFabricante, updateFabricanteById}
+const getFabricanteYSusProductos = async (req, res) => {
+    const idFabricante = req.params.id
+    const fabricante = await Fabricante.findOne({
+        where : { id : idFabricante },
+        include : {
+            model: Producto
+        }
+    })
+    res.status(200).json(fabricante)
+}
+
+module.exports = {getAllFabricantes, getFabricanteById, deleteFabricanteById, createFabricante, updateFabricanteById, getFabricanteYSusProductos}
 
 
