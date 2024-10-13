@@ -2,8 +2,10 @@ const express = require('express')
 const app = express()
 const db = require('./models')
 const routes = require('./routes')
+const { genericMiddleware } = require('./middlewares')
 const PORT = 3001
 
+app.use(genericMiddleware.requestTime)
 app.use(express.json())
 app.use(routes.fabricantesRoute)
 app.use(routes.componentesRoute)
