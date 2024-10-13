@@ -1,4 +1,4 @@
-const { Componente } = require('../models')
+const { Componente, Producto } = require('../models')
 
 const getAllComponentes = async (req, res) => {
     const componentes = await Componente.findAll({})
@@ -42,6 +42,17 @@ const updateComponenteById = async (req, res) => {
     res.status(200).json(componente)
 }
 
-module.exports = {getAllComponentes, getComponenteById, deleteComponenteById, createComponente, updateComponenteById}
+const getComponenteYSusProductos = async (req, res) => {
+    const idComponente = req.params.id
+    const componente = await Componente.findOne({
+        where : { id : idComponente },
+        include : {
+            model: Producto
+        }
+    })
+    res.status(200).json(componente)
+}
+
+module.exports = {getAllComponentes, getComponenteById, deleteComponenteById, createComponente, updateComponenteById, getComponenteYSusProductos}
 
 

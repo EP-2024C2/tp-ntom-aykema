@@ -13,4 +13,6 @@ route.delete('/componentes/:id', componentesController.deleteComponenteById)
 
 route.put('/componentes/:id', componentesController.updateComponenteById)
 
+route.get('/componentes/:id/productos', componentesController.getComponenteYSusProductos)
+
 module.exports = route
