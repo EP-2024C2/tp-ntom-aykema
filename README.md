@@ -1,176 +1,114 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/NoutYWiV)
-# Estrategias de Persistencia - TP 2024
+# TP-NtoM - Grupo Aykema
 
-Este trabajo práctico tiene como objetivo principal que los alumnos adquieran experiencia práctica en la implementación de asociaciones 1 a N y N a M en el contexto de una API REST utilizando un ORM (Object-relational mapping).
+Repositorio del trabajo práctico 1, creado por el **Grupo Aykema**.
 
-- Asociaciones 1 a N y N a M:
-Las asociaciones 1 a N y N a M son conceptos fundamentales en el diseño de bases de datos relacionales. En una asociación 1 a N, un registro de una tabla está asociado con uno o más registros de otra tabla. Por otro lado, en una asociación N a M, varios registros de una tabla están asociados con varios registros de otra tabla a través de una tabla de unión intermedia.
+## Descripción
 
-- API REST:
-Una API REST (Representational State Transfer) es un conjunto de reglas y convenciones para la creación de servicios web que permiten la comunicación entre sistemas. En este trabajo práctico, utilizaremos una API REST para exponer recursos y permitir operaciones CRUD (Create, Read, Update, Delete) sobre estos recursos.
+Este proyecto consiste en un API REST construida con Node.js, Express y Sequelize que implementa asociaciones de tipo "muchos a muchos" (M:N). Se utiliza **SQLite** como base de datos.
 
-- Enfoque Práctico:
-Los alumnos implementarán las asociaciones mencionadas anteriormente en el contexto de una API REST utilizando un ORM específico,Sequelize. Se espera que los alumnos comprendan cómo definir modelos, establecer relaciones entre ellos y utilizar las capacidades del ORM para interactuar con la base de datos.
+## Estructura del Proyecto
 
-- Criterios de Evaluación:
-Se evaluará la precisión y completitud en la implementación de las asociaciones en la API REST, así como la funcionalidad completa del CRUD para los recursos expuestos por la API.
+- **src/index.js**: Punto de entrada de la aplicación.
+- **/models**: Modelos Sequelize que representan las tablas de la base de datos.
+- **/routes**: Rutas para interactuar con los recursos.
+- **/controllers**: Lógica para manejar las solicitudes y respuestas de las rutas.
+- **/config**: Configuraciones de la aplicación.
+- **/middlewares**: Contiene los middlewares personalizados.
+- **/schemas**: Define los esquemas de validación de datos utilizando Joi.
 
-## Descripción del Proyecto
+## Dependencias
 
-Han sido contratados/as por una empresa de manufactura para desarrollar un sistema interno de gestión de productos. La empresa fabrica una amplia gama de productos tecnológicos que requieren componentes específicos y son producidos por múltiples fabricantes asociados. Actualmente, el proceso de gestión de esta información es manual y está descentralizado, lo que genera demoras y problemas en la producción. La empresa busca automatizar y centralizar estos datos mediante un sistema web eficiente que permita gestionar los productos, fabricantes y componentes de manera integrada.
+### Principales:
 
-## Modelo Relacional a implementar
+- **express**: Framework para crear la API.
+- **sequelize**: ORM para manejar las asociaciones y consultas de la base de datos.
+- **sqlite3**: Base de datos por defecto para el proyecto.
+- **joi**: Dependencia para la validación de datos.
 
-Basandose en el siguiente diagrama de entidad-relacion (DER) deberán generar los modelos y la asociaciones en Sequelize para que la API pueda interacturar con la base de datos a través de los Modelos.
+### Desarrollo:
 
-![DER](DER.png)
+- **nodemon**: Herramienta para reiniciar el servidor automáticamente durante el desarrollo.
+- **sequelize-cli**: CLI para manejar las migraciones y otros comandos de Sequelize.
 
-### Descripción del modelo DER
-- Un **Producto** puede tener muchos fabricantes, y un **Fabricante** puede fabricar muchos productos.
-- Un **Producto** puede tener muchos componentes, y un **Componente** puede formar parte de varios productos.
+## Instalación
 
-### Base de datos
-El motor de base de datos a utilizar podra ser elegido por los alumnos. La recomendacion es utilizar sqlite para pruebas simple y luego probar con otro motor de base de datos tipo MySql o Postgres.
+1. Clonar el repositorio:
 
-### Intalacion de dependencias
-Debera contar con las dependencias de produccion y desarrollo necesarias de un proyecto node. Por ejemplo:
+   ```bash
+   git clone https://github.com/EP-2024C2/tp-ntom-aykema
+   cd tp-ntom-aykema
+    ```
 
-```npm i sequelize sqlite3```
+2. **Instalar las dependencias**:
 
-```npm i -D sequelize-cli``` 
+   ```bash
+   npm i
+    ```
 
-### Tips - Comandos utililes
-- Inicializar un proyecto sequelize 
+### 3. Configurar la base de datos:
 
-```npx sequelize-cli init```
-- Generar un modelos simple
-
-
-```npx sequelize-cli model:generate --name Carrera --attributes "nombre:string,grado:string,universidad:string"```
-
-## API
-Implementar la API utilizando el framework express en el entorde de ejecucion de un poryecto NodeJs. Organizar el código en rutas, controlers y middleware utilizando la separación por recurso. A continuación se detallan los endpoinds que deberán estar disponbiles en la API.
+- Por defecto, el proyecto está configurado para utilizar SQLite.
+- Se puede usar otra base de datos, solo hay que actualizar la configuración en el archivo `/models/index.js` y descomentar las líneas necesarias para sincronizar con la nueva base de datos.
+- **Nota**: Si usas `db.sequelize.sync({force: true})` de `/src/index.js` para crear las tablas, tener en cuenta que esto eliminará y recreará las tablas existentes.
 
 
-|Verbo|Recurso|Status code|Descripción|
-|-----|-------|-----------|-----------|
-| GET   | /productos | 200 | Obtener todos los productos |
-| GET   | /productos/:id | 200, 404 | Obtener un producto en particular |
-| POST  | /productos | 201, 400 | Crear un producto |
-| PUT   | /productos/:id | 200, 404 | Modificar los datos de un producto en particular |
-| DELETE| /productos/:id | 200, 404, 500 | Borrar un producto en particular |
-| POST  | /productos/:id/fabricantes | 201, 404, 400 | Crear la asociación de producto con 1 o N fabricantes |
-| GET   | /productos/:id/fabricantes | 200, 404 | Obtener todos los fabricantes de un producto |
-| POST  | /productos/:id/componentes | 201, 404, 400 | Crear la asociación de producto con 1 o N componentes |
-| GET   | /productos/:id/componentes | 200, 404 | Obtener todos los componentes de un producto |
-| GET   | /fabricantes | 200 | Obtener todos los fabricantes |
-| GET   | /fabricantes/:id | 200, 404 | Obtener un fabricante en particular |
-| POST  | /fabricantes | 201, 400 | Crear un fabricante |
-| PUT   | /fabricantes/:id | 200, 404 | Modificar los datos de un fabricante en particular |
-| DELETE| /fabricantes/:id | 200, 404, 500 | Borrar un fabricante en particular |
-| GET   | /fabricantes/:id/productos | 200, 404 | Obtener todos los productos de un fabricante |
-| GET   | /componentes | 200 | Obtener todos los componentes |
-| GET   | /componentes/:id | 200, 404 | Obtener un componente en particular |
-| POST  | /componentes | 201, 400 | Crear un componente |
-| PUT   | /componentes/:id | 200, 404 | Modificar los datos de un componente en particular |
-| DELETE| /componentes/:id | 200, 404, 500 | Borrar un componente en particular |
-| GET   | /componentes/:id/productos | 200, 404 | Obtener todos los productos de un componente |
+## Uso
 
-## Ejemplos
-A modo de ejemplo se muestra el resultado de algunas respuesta de los endpoind detallado en la tabla de la sección anterior.
+### Desarrollo
 
-Recurso:  **_/fabricantes/1/productos_**
+Para iniciar la aplicación en modo desarrollo con **Nodemon**, ejecuta:
 
-Obtiene los datos del fabricante registrado con el id 1, con todos los productos que fabrica, incluyendo los atributos de cada producto y los componentes asociados a esos productos.
-
-```
-{
-    "id": 1,
-    "nombre": "TechCorp",
-    "direccion": "1234 Elm St, Ciudad",
-    "contacto": "+123456789",
-    "pathImgPerfil": "/images/fabricantes/techcorp.jpg",
-    "productos": [
-        {
-            "id": 1,
-            "nombre": "Laptop X200",
-            "descripcion": "Una laptop de alto rendimiento",
-            "precio": 1200.99,
-            "pathImg": "/images/productos/laptop-x200.jpg",
-            "componentes": [
-                {
-                    "id": 1,
-                    "nombre": "Procesador Intel i7",
-                    "descripcion": "Procesador de octava generación"
-                },
-                {
-                    "id": 2,
-                    "nombre": "SSD 1TB",
-                    "descripcion": "Disco sólido de 1TB de capacidad"
-                }
-            ]
-        },
-        {
-            "id": 2,
-            "nombre": "Smartphone S5",
-            "descripcion": "Teléfono inteligente con pantalla OLED",
-            "precio": 799.99,
-            "pathImg": "/images/productos/smartphone-s5.jpg",
-            "componentes": [
-                {
-                    "id": 3,
-                    "nombre": "Pantalla OLED 6.5 pulgadas",
-                    "descripcion": "Pantalla de alta definición"
-                },
-                {
-                    "id": 4,
-                    "nombre": "Batería 4000mAh",
-                    "descripcion": "Batería de larga duración"
-                }
-            ]
-        }
-    ]
-}
+```bash
+npm run dev
 ```
 
-Recurso: **_/productos/1/fabricantes_**
+### Desarrollo
 
-Obtiene los datos del producto registrado con el id 1, con todos los fabricantes que lo producen, incluyendo los atributos de cada fabricante.
+Para iniciar la aplicación en producción, ejecuta:
 
+```bash
+npm start
 ```
-{
-    "id": 1,
-    "nombre": "Laptop X200",
-    "descripcion": "Una laptop de alto rendimiento",
-    "precio": 1200.99,
-    "pathImg": "/images/productos/laptop-x200.jpg",
-    "fabricantes": [
-        {
-            "id": 1,
-            "nombre": "TechCorp",
-            "direccion": "1234 Elm St, Ciudad",
-            "contacto": "+123456789",
-            "pathImgPerfil": "/images/fabricantes/techcorp.jpg"
-        },
-        {
-            "id": 2,
-            "nombre": "Innovatech",
-            "direccion": "4567 Oak Ave, Ciudad",
-            "contacto": "+987654321",
-            "pathImgPerfil": "/images/fabricantes/innovatech.jpg"
-        }
-    ]
-}
-```
+La aplicación estará disponible en [http://localhost:3001](http://localhost:3001).
 
-## Consideraciones Finales sobre la Entrega
+## Rutas
 
-- El equipo debera entegar un repositorio de github con todas las instrucciones necesarias para correr la api. 
-- Deberán  detallar los commandos necesarios para la instalación y ejecución de la api.
-- Dentro del Readme.md deberá tener una imagen del diagrama entidad-relacion
-- El puerto de listener deberá ser configurable por variable de entorno
-- La entega debe soportar cambiar la configuración del motor de base de datos de forma simple en funcion de probar con distintos motores.
+Las rutas definidas en la aplicación son:
 
+### Componentes
+- `GET /componentes`: Obtiene todos los componentes.
+- `GET /componentes/:id`: Obtiene un componente por su ID.
+- `POST /componentes`: Crea un nuevo componente.
+- `DELETE /componentes/:id`: Elimina un componente por su ID.
+- `PUT /componentes/:id`: Actualiza un componente por su ID.
+- `GET /componentes/:id/productos`: Obtiene los productos asociados a un componente por su ID.
 
+### Fabricantes
+- `GET /fabricantes`: Obtiene todos los fabricantes.
+- `GET /fabricantes/:id`: Obtiene un fabricante por su ID.
+- `POST /fabricantes`: Crea un nuevo fabricante.
+- `DELETE /fabricantes/:id`: Elimina un fabricante por su ID.
+- `PUT /fabricantes/:id`: Actualiza un fabricante por su ID.
+- `GET /fabricantes/:id/productos`: Obtiene los productos asociados a un fabricante por su ID.
 
+### Productos
+- `GET /productos`: Obtiene todos los productos.
+- `GET /productos/:id`: Obtiene un producto por su ID.
+- `POST /productos`: Crea un nuevo producto.
+- `DELETE /productos/:id`: Elimina un producto por su ID.
+- `PUT /productos/:id`: Actualiza un producto por su ID.
+- `GET /productos/:id/componentes`: Obtiene los componentes asociados a un producto por su ID.
+- `GET /productos/:id/fabricantes`: Obtiene los fabricantes asociados a un producto por su ID.
+- `POST /productos/:id/componentes`: Agrega un componente a un producto por su ID.
+- `POST /productos/:id/fabricantes`: Agrega un fabricante a un producto por su ID.
+
+## Diagrama
+
+![Diagrama](diagrama.png)
+
+## Autores
+
+- **Kevin Caria**
+- **Martin Bruno**
+- **Aymara Dileo**
 
