@@ -24,6 +24,7 @@ Este proyecto consiste en un API REST construida con Node.js, Express y Sequeliz
 - **sequelize**: ORM para manejar las asociaciones y consultas de la base de datos.
 - **sqlite3**: Base de datos por defecto para el proyecto.
 - **joi**: Dependencia para la validación de datos.
+- **dotenv**: Carga variables de entorno desde un archivo `.env`.
 
 ### Desarrollo:
 
@@ -111,4 +112,3 @@ Las rutas definidas en la aplicación son:
 - **Kevin Caria**
 - **Martin Bruno**
 - **Aymara Dileo**
-
