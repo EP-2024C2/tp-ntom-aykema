@@ -16,6 +16,7 @@
   "author": "Grupo aykema",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "joi": "^17.13.3",
     "sequelize": "^6.37.4",
