@@ -18,4 +18,25 @@ const validateId = (Model) => {
     }
 }
 
-module.exports = { requestTime, validateId}
+const validateAssociationsById = (Model, throughModel) => {
+  return async (req, res, next) => {
+    const id = req.params.id;
+
+    const instance = await Model.findOne({
+      where: { id },
+      include: {
+        model: throughModel
+      }
+    })
+
+    const associations = instance['Productos']
+    console.log(associations)
+    if (associations.length > 0) {
+      return res.status(500).json({ mensaje: `No se puede eliminar el ${Model.name} porque tiene registros asociados en ${throughModel.name}.` });
+    }
+
+    next();
+  };
+};
+
+module.exports = { requestTime, validateId, validateAssociationsById}
