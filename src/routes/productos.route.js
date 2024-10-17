@@ -2,7 +2,7 @@ const { Router } = require('express')
 const productosController = require('../controllers/productos.controller')
 const middlewares = require('../middlewares')
 const schemas = require('../schemas')
-const { Producto } = require('../models')
+const { Producto, Fabricante, Componente } = require('../models')
 
 const route = Router()
 
@@ -12,7 +12,7 @@ route.get('/productos/:id', middlewares.genericMiddleware.validateId(Producto), 
 
 route.post('/productos', middlewares.schemaValidator(schemas.productosSchema), productosController.createProducto)
 
-route.delete('/productos/:id', middlewares.genericMiddleware.validateId(Producto), productosController.deleteProductoById)
+route.delete('/productos/:id', middlewares.genericMiddleware.validateId(Producto), middlewares.genericMiddleware.validateAssociationsById(Producto, Fabricante), middlewares.genericMiddleware.validateAssociationsById(Producto, Componente), productosController.deleteProductoById)
 
 route.put('/productos/:id', middlewares.schemaValidator(schemas.productosSchema), middlewares.genericMiddleware.validateId(Producto), productosController.updateProductoById)
 

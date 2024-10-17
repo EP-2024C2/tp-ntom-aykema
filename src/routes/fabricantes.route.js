@@ -2,7 +2,7 @@ const { Router } = require('express')
 const fabricantesController = require('../controllers/fabricantes.controller')
 const middlewares = require('../middlewares')
 const { fabricantesSchema } = require('../schemas')
-const { Fabricante } = require('../models')
+const { Fabricante, Producto } = require('../models')
 
 const route = Router()
 
@@ -12,7 +12,7 @@ route.get('/fabricantes/:id', middlewares.genericMiddleware.validateId(Fabricant
 
 route.post('/fabricantes', middlewares.schemaValidator(fabricantesSchema), fabricantesController.createFabricante)
 
-route.delete('/fabricantes/:id', middlewares.genericMiddleware.validateId(Fabricante), fabricantesController.deleteFabricanteById)
+route.delete('/fabricantes/:id', middlewares.genericMiddleware.validateId(Fabricante), middlewares.genericMiddleware.validateAssociationsById(Fabricante, Producto), fabricantesController.deleteFabricanteById)
 
 route.put('/fabricantes/:id', middlewares.schemaValidator(fabricantesSchema), middlewares.genericMiddleware.validateId(Fabricante), fabricantesController.updateFabricanteById)
 

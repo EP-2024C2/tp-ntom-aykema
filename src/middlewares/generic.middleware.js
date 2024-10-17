@@ -29,8 +29,9 @@ const validateAssociationsById = (Model, throughModel) => {
       }
     })
 
-    const associations = instance['Productos']
-    console.log(associations)
+    const modelName = throughModel.name + 's'
+    
+    const associations = instance[modelName]  
     if (associations.length > 0) {
       return res.status(500).json({ mensaje: `No se puede eliminar el ${Model.name} porque tiene registros asociados en ${throughModel.name}.` });
     }
